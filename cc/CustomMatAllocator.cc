@@ -1,6 +1,12 @@
 #include "CustomMatAllocator.h"
 //#include <iostream>
 
+#if CV_VERSION_MAJOR == 4
+    typedef cv::AccessFlag cv_access_flag_t;
+#else
+    typedef int cv_access_flag_t;
+#endif
+
 #ifdef OPENCV4NODEJS_ENABLE_EXTERNALMEMTRACKING
 
 cv::UMatData* CustomMatAllocator::allocate(int dims, const int* sizes, int type,
@@ -26,7 +32,7 @@ cv::UMatData* CustomMatAllocator::allocate(int dims, const int* sizes, int type,
     return u;
 }
 
-bool CustomMatAllocator::allocate(cv::UMatData* u, int accessFlags, cv::UMatUsageFlags usageFlags) const
+bool CustomMatAllocator::allocate(cv::UMatData* u, cv_access_flag_t accessFlags, cv::UMatUsageFlags usageFlags) const
 {
     // this does not seem to change memory allocation?
     return stdAllocator->allocate(u, accessFlags, usageFlags);

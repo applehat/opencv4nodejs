@@ -18,6 +18,11 @@
     #define OPENCV4NODEJS_ENABLE_EXTERNALMEMTRACKING 1
 #endif
 
+#if CV_VERSION_MAJOR == 4
+    typedef cv::AccessFlag cv_access_flag_t;
+#else
+    typedef int cv_access_flag_t;
+#endif
 
 #ifdef OPENCV4NODEJS_ENABLE_EXTERNALMEMTRACKING
 
@@ -56,7 +61,7 @@ public:
 
     cv::UMatData* allocate(int dims, const int* sizes, int type,
                        void* data0, size_t* step, int /*flags*/, cv::UMatUsageFlags /*usageFlags*/) const;
-    bool allocate(cv::UMatData* u, int /*accessFlags*/, cv::UMatUsageFlags /*usageFlags*/) const;
+    bool allocate(cv::UMatData* u, cv_access_flag_t /*accessFlags*/, cv::UMatUsageFlags /*usageFlags*/) const;
     void deallocate(cv::UMatData* u) const;
 
     int64_t readtotalmem();
